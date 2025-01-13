@@ -103,6 +103,12 @@
 
       const btnShare = document.getElementById('btn-share');
 
+      const cardfooter = document.getElementById('card-footer');;
+      cardfooter.classList.remove('on');
+
+      const shareContainer = document.getElementById('share-container');
+      shareContainer.classList.remove('on');
+
       btnShare.replaceWith(btnShare.cloneNode(true));
 
       if (containerWidth < 500) {
