@@ -110,7 +110,7 @@ body, main {
     justify-content: center;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 500px) {
     .container {
         padding: 2rem;
     }
@@ -153,9 +153,31 @@ body, main {
     .card-footer .share-tooltip img {
         width: 1.5rem;
     }
+
+    .on {
+        width: 100%;
+        display: flex;
+        background-color: var(--very-dark-grayish-blue);
+    }
+
+    .on > .share-container {
+        width: 100%;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    .on > .share-container > .share-tooltip {
+        display: flex;
+    }
+
+    .on > .info {
+        display: none;
+    }
+    
+
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 500px) {
     .container {
         width: 50%;
         flex-direction: row;
@@ -246,6 +268,14 @@ body, main {
         letter-spacing: 0.2rem;
         font-weight: 500;
         color: var(--desaturated-dark-blue);
+    }
+
+    .on > .share-tooltip {
+        display: flex;
+    }
+
+    .on > .btn-share {
+       background-color: var(--very-dark-grayish-blue);
     }
     
 }

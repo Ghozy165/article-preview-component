@@ -74,52 +74,67 @@
   </footer> -->
 
   <script type="text/javascript"> 
-    const screenWidth = window.innerWidth;
-    if (screenWidth < 600) {
-      document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('btn-share').addEventListener('click', (e) => {
-          const cardfooter = document.getElementById('card-footer');
-          const shareContainer = document.getElementById('share-container');
-          const share = document.getElementById('share-tooltip');
-          const info = document.getElementById('info');
-          if(share.style.display === "none") {
-            cardfooter.style.backgroundColor = "hsl(217, 19%, 35%)";
-            shareContainer.style.width = "100%";
-            shareContainer.style.paddingLeft = "1.5rem";
-            shareContainer.style.paddingRight = "1.5rem";
-            share.style.display = "flex";
-            info.style.display = "none";
-          }else{
-            cardfooter.style.backgroundColor = "white";
-            shareContainer.style.width = "";
-            shareContainer.style.paddingLeft = "";
-            shareContainer.style.paddingRight = "";
-            share.style.display = "none";
-            info.style.display = "flex";
-          }
-        })
-      })
-    }else{
+    function throttle(func, limit) {
+      let inThrottle = false;
+
+      return function(...args) {
+        if (!inThrottle) {
+          func.apply(this, args);
+          inThrottle = true;
+
+          setTimeout(() => {
+            inThrottle = false;
+          }, limit);
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      handleResponsive();
+    });
+
+    window.addEventListener('resize', throttle(() => {
+      handleResponsive();
+    }, 250));
+
+    function handleResponsive() {
+      const container = document.querySelector('.container'); 
+      const containerWidth = container.offsetWidth;
 
       const btnShare = document.getElementById('btn-share');
-      const tooltip = document.getElementById('share-tooltip');
-      btnShare.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const isTooltipVisible = tooltip.style.display === 'flex';
-        const clickColor = btnShare.style.display === 'hsl(217, 19%, 35%)';
-        tooltip.style.display = isTooltipVisible ? 'none' : 'flex';
-        btnShare.style.backgroundColor = clickColor ? 'hsl(210, 46%, 95%)' : 'hsl(217, 19%, 35%)';
-      });
 
-      document.addEventListener('click', (event) => {
-        const isClickInside = btnShare.contains(event.target) || tooltip.contains(event.target);
-        if (!isClickInside) {
-          tooltip.style.display = 'none';
-          btnShare.style.backgroundColor = "hsl(210, 46%, 95%)";
-        }
-      });
+      btnShare.replaceWith(btnShare.cloneNode(true));
 
+      if (containerWidth < 500) {
+        document.getElementById('btn-share').addEventListener('click', (e) => {
+          e.stopPropagation();
+          const cardfooter = document.getElementById('card-footer');;
+          cardfooter.classList.toggle('on');
+        })
+      } else {
+        let isAlreadyClicked = false;
+        const shareContainer = document.getElementById('share-container');
+        const tooltip = document.getElementById('share-tooltip');
+        const btnShare = document.getElementById('btn-share');
+        btnShare.addEventListener('click', (e) => {
+          e.stopPropagation();
+          shareContainer.classList.toggle('on');
+          console.log(shareContainer);
+          isAlreadyClicked = false;
+        });
+
+        document.addEventListener('click', (e) => {
+          const isClickInside = btnShare.contains(e.target) || tooltip.contains(e.target);
+          if (!isClickInside && !isAlreadyClicked) {
+            shareContainer.classList.remove('on');
+            isAlreadyClicked = true;
+            console.log("remove");
+          }
+          console.log("has been removed but clicked outside");
+        });
+      }
     }
+
   </script>
 
 </body>
